@@ -12,6 +12,7 @@ Ext.define('ControlRoomDesktop.Application', {
     requires: [
         'Ext.state.*',
         'Ext.window.MessageBox',
+        'Ext.window.Toast',
         'Ext.ux.desktop.ShortcutModel',
         'ControlRoomDesktop.widgets.RfqWidget',
         'Login.view.login.LoginCheck'
