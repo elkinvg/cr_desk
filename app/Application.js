@@ -125,6 +125,7 @@ Ext.define('ControlRoomDesktop.Application', {
         window.location.reload();
         localStorage.removeItem('login');
         localStorage.removeItem('password');
+        localStorage.removeItem('priority');
     },
     //
     //
