@@ -9,26 +9,35 @@ Ext.define('ControlRoomDesktop.Application', {
     login: localStorage.getItem("login"),
     passw: localStorage.getItem("password"),
     
+    //name: 'ControlRoomDesktop',
+    
     requires: [
         'Ext.state.*',
         'Ext.window.MessageBox',
         'Ext.window.Toast',
         'Ext.ux.desktop.ShortcutModel',
-        'ControlRoomDesktop.widgets.RfqWidget',
+        //'ControlRoomDesktop.widgets.RfqWidget',
+        'ControlRoomDesktop.widgets.LensCoolingWidget',
+        'ControlRoomDesktop.widgets.MagnetCoolingWidget',
+        'ControlRoomDesktop.widgets.LcOutWidget',
         'Login.view.login.LoginCheck'
     ],
     
+
     init: function () {
+        
         if (this.login===null || this.passw===null) {
-            Ext.widget('logincheck');
-            return;
+            // Пока без авторизации
+            /*Ext.widget('logincheck');
+            return;*/
+            this.login = 'anon';
         }
         Ext.toast({
             html: 'Hello, ' + this.login,
             header: false,
             width: 200,
             align: 'tr'
-        }); 
+        });
         this.callParent();
     },
     //
@@ -38,7 +47,7 @@ Ext.define('ControlRoomDesktop.Application', {
     getStartConfig : function() {
         var me = this, ret = me.callParent();
         var toolConfItems = new Array();
-        toolConfItems.push({
+        /*toolConfItems.push({
             text: 'Выйти',
             iconCls: 'logout',
             handler: me.onLogout,
@@ -50,10 +59,10 @@ Ext.define('ControlRoomDesktop.Application', {
             iconCls: 'settings',
             handler: me.openSetPage,
             scope: me
-        });
+        });*/
         
         return Ext.apply(ret, {
-            title: localStorage.getItem("Login"),
+            //title: localStorage.getItem("Login"),
             iconCls: 'user',
             height: 300,
             toolConfig: {
@@ -79,13 +88,20 @@ Ext.define('ControlRoomDesktop.Application', {
     //
     getDesktopConfig: function () {
         var me = this, ret = me.callParent();
-        var rfqControl = {name: 'RFQ-контоль', iconCls: 'cpu-shortcut', module:'rfq-widg'};
+        //var rfqControl = {name: 'RFQ-контоль', iconCls: 'cpu-shortcut', module:'rfq-widg'};
         var dataFor = new Array();
         // проверка наличия логина и пароля в localStorage
         // также предполагается добавлять элементы в зависимости от клиента ... 
         // использовать настройки клиентаs
-        if (this.login !== null || this.passw !== null) {
-            dataFor.push(rfqControl);
+        // Модули только для зарегистрированных 
+        if ((this.login !== null && this.login !== 'anon') || (this.passw !== null && this.passw !== 'anon') ) {
+            //dataFor.push({name: 'RFQ-контоль', iconCls: 'cpu-shortcut', module:'rfq-widg'});            
+        }
+        // Для анон
+        else {
+            dataFor.push({name: 'Охлаждение магнитов', iconCls: 'magn_48', module:'magncool_widg'});
+            dataFor.push({name: 'Охлаждение линз', iconCls: 'cooling_small_l_48', module:'lenscool_widg'});
+            dataFor.push({name: 'Питание линз', iconCls: 'ps_icon_48x48', module:'lcout_widg'});
         }
         
         // add context menuItem
@@ -102,7 +118,7 @@ Ext.define('ControlRoomDesktop.Application', {
             
             shortcuts: Ext.create('Ext.data.Store', {
                 model: 'Ext.ux.desktop.ShortcutModel',
-                data: dataFor,
+                data: dataFor
             }),
             contextMenuItems: contextFor
         });
@@ -113,8 +129,15 @@ Ext.define('ControlRoomDesktop.Application', {
     getModules : function(){
         var modules = new Array();
         
-        if (this.login !== null || this.passw !== null) {
-            modules.push(new ControlRoomDesktop.widgets.RfqWidget());
+        // Модули только для зарегистрированных 
+        if ((this.login !== null && this.login !== 'anon') || (this.passw !== null && this.passw !== 'anon') ) {
+            //modules.push(new ControlRoomDesktop.widgets.RfqWidget());            
+        }
+        // Для анон
+        else {
+            modules.push(new ControlRoomDesktop.widgets.LensCoolingWidget());
+            modules.push(new ControlRoomDesktop.widgets.MagnetCoolingWidget());
+            modules.push(new ControlRoomDesktop.widgets.LcOutWidget());
         }
         return modules;       
     },

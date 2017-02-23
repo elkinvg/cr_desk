@@ -12,7 +12,52 @@ Ext.application({
     
     init: function () {
         var app = new ControlRoomDesktop.Application();
+    },
+    //
+    //
+    //
+    getSettFromLocalStorage: function (nameOfKey) {
+        var set_data = localStorage.getItem("sett_data");
+
+        if (set_data === null)
+            return set_data;
+
+        try {
+            var dataFromSettLS = Ext.util.JSON.decode(set_data);
+        } catch (e) {
+            return null;
+        }
+
+        var values = dataFromSettLS[nameOfKey];
+
+        if (values === undefined)
+            return null;
+
+        return values;
+    },
+    //
+    //
+    //
+    saveSettInLocalStorage : function (nameOfKey,value) {
+        // Для сохранения различных настроек в sett_data из LocalStorage
+        var sett_data = localStorage.getItem("sett_data");
+        
+        if (sett_data===null) {
+            sett_data = new Object();
+            sett_data[nameOfKey] = value;
+            var json =  Ext.util.JSON.encode(sett_data);
+            localStorage.setItem("sett_data", json);
+        } else {
+            try {
+                var fromSettData = Ext.util.JSON.decode(sett_data);
+                fromSettData[nameOfKey] = value;
+                var json = Ext.util.JSON.encode(fromSettData);
+                localStorage.setItem("sett_data", json);
+            }
+            catch (e){}
+        }
     }
+    
 //    extend: 'ControlRoomDesktop.Application',
 //
 //    requires: [
