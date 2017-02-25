@@ -1,13 +1,13 @@
 Ext.define('ControlRoomDesktop.view.cooling.LensCoolingController', {
-//    extend: 'Ext.app.ViewController',
     extend: 'ControlRoomDesktop.view.cooling.AbstractCoolingController',
     alias: 'controller.lenscooling',
     init: function () {
         var me = this;
-        console.log("LensCoolingController init");
+        if(typeof dbg !== 'undefined') 
+            console.log("LensCoolingController init");
         //Ext.ux.Mediator.on('test', this.testMed, this);
 
-        Ext.create('store.lenscoolingstore');
+        Ext.create('store.coolingstore');
 
         var task = {
             run: function () {
@@ -34,7 +34,8 @@ Ext.define('ControlRoomDesktop.view.cooling.LensCoolingController', {
                         me.getData(ans, Temp);
                     },
                     failure: function (ans) {
-                        console.log("AJAX FAILURE");
+                        if(typeof dbg !== 'undefined') 
+                            console.log("AJAX FAILURE");
                     }
                 });
             },

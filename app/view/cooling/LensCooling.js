@@ -5,11 +5,11 @@ Ext.define('ControlRoomDesktop.view.cooling.LensCooling', {
     requires: [
         'Ext.data.Store',
         'ControlRoomDesktop.view.cooling.LensCoolingController',
-        'ControlRoomDesktop.store.LensCoolingStore',
+        'ControlRoomDesktop.store.CoolingStore',
         //'LensControl.store.LensTemperatureStore',
         'Ext.chart.*',
         'Ext.layout.container.Absolute',
-        //'ControlRoomDesktop.view.cooling.LensCoolChart'
+        'ControlRoomDesktop.view.cooling.LensCoolChart'
     ],
     controller: 'lenscooling',
     //store: 'lenscooling_Store',
@@ -83,8 +83,8 @@ Ext.define('ControlRoomDesktop.view.cooling.LensCooling', {
                     x: 318, 
                     y: 317,
                     xtype: 'button',
-                    reference: 'graphbut',
-                    name: 'graphbut',
+                    reference: 'lens_graphbut',
+                    name: 'lens_graphbut',
                     width: 150,
                     text: 'Показать график',
                     handler: 'getChart'

@@ -1,21 +1,23 @@
-Ext.define('ControlRoomDesktop.view.cooling.LensCoolChart', {
-    xtype: 'lenscool_chart',
+Ext.define('ControlRoomDesktop.view.cooling.MagnetCoolChart', {
+    xtype: 'magnetcool_chart',
     extend: 'Ext.window.Window',
-    controller: 'lenscool_chart',
+    controller: 'magnetcool_chart',
     requires: [
         'Ext.data.Store',
-        'ControlRoomDesktop.view.cooling.LensCoolChartController',
+        'ControlRoomDesktop.view.cooling.MagnetCoolChartController',
         'ControlRoomDesktop.store.CoolingStore',
         'Ext.chart.*'
     ],
     width: '100%'
-            , title: 'Изменение температур системы охлаждения'
+            , title: 'Изменение температур системы охлаждения поворотных магнитов'
+            , err: 'err'
             , height: 600
             , draggable: false
             , border: false
             , modal: true
             , resizable: false
-            , name: 'lenscool_chart'
+            , name: 'magnetcool_chart'
+            ,id: 'magnetcool_chart'
             , items: [
                 {
                     xtype: 'cartesian',
@@ -34,13 +36,13 @@ Ext.define('ControlRoomDesktop.view.cooling.LensCoolChart', {
                             title: 'Температура',
                             type: 'numeric',
                             fields: [
-                                'T_1',
-                                'T_2',
-                                'T_3',
-                                'T_4',
-                                'T_5',
-                                'T_6',
-                                'T_7'
+                                'T2_1',
+                                'T2_2',
+                                'T2_3',
+                                'T2_4',
+                                //'T_5',
+                                'T2_6',
+                                'T2_7'
                             ],
                             //minimum: 18,
                             //maximum: 21,
@@ -68,8 +70,8 @@ Ext.define('ControlRoomDesktop.view.cooling.LensCoolChart', {
                         {
                             type: 'line',
                             xField: 'time',
-                            yField: 'T_1',
-                            title: 'напор<br>общий',
+                            yField: 'T2_1',
+                            title: 'ПМ1 подача',
                             style: {
                                 lineWidth: 4
                             },
@@ -81,8 +83,8 @@ Ext.define('ControlRoomDesktop.view.cooling.LensCoolChart', {
                         {
                             type: 'line',
                             xField: 'time',
-                            yField: 'T_2',
-                            title: 'K2',
+                            yField: 'T2_2',
+                            title: 'ПМ2 подача',
                             style: {
                                 lineWidth: 4
                             },
@@ -94,8 +96,8 @@ Ext.define('ControlRoomDesktop.view.cooling.LensCoolChart', {
                         {
                             type: 'line',
                             xField: 'time',
-                            yField: 'T_3',
-                            title: 'K3',
+                            yField: 'T2_3',
+                            title: 'ПМ2 слив',
                             style: {
                                 lineWidth: 4
                             },
@@ -107,8 +109,8 @@ Ext.define('ControlRoomDesktop.view.cooling.LensCoolChart', {
                         {
                             type: 'line',
                             xField: 'time',
-                            yField: 'T_4',
-                            title: 'K1',
+                            yField: 'T2_4',
+                            title: 'ПМ1 слив',
                             style: {
                                 lineWidth: 4
                             },
@@ -117,7 +119,7 @@ Ext.define('ControlRoomDesktop.view.cooling.LensCoolChart', {
                                 renderer: 'onSeriesTooltipRender'
                             }
                         },
-                        {
+                        /*{
                             type: 'line',
                             xField: 'time',
                             yField: 'T_5',
@@ -129,12 +131,12 @@ Ext.define('ControlRoomDesktop.view.cooling.LensCoolChart', {
                                 trackMouse: true,
                                 renderer: 'onSeriesTooltipRender'
                             }
-                        },
+                        },*/
                         {
                             type: 'line',
                             xField: 'time',
-                            yField: 'T_6',
-                            title: 'Вода<br>подача',
+                            yField: 'T2_6',
+                            title: 'ПМ1 ветвь 5',
                             style: {
                                 lineWidth: 4
                             },
@@ -146,8 +148,8 @@ Ext.define('ControlRoomDesktop.view.cooling.LensCoolChart', {
                         {
                             type: 'line',
                             xField: 'time',
-                            yField: 'T_7',
-                            title: 'Вода<br>слив',
+                            yField: 'T2_7',
+                            title: 'ПМ1 ветвь 4',
                             style: {
                                 lineWidth: 4
                             },
@@ -170,4 +172,7 @@ Ext.define('ControlRoomDesktop.view.cooling.LensCoolChart', {
                 }
             ]
 });
+
+
+
 

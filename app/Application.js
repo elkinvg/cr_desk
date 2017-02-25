@@ -1,15 +1,7 @@
-/**
- * The main application class. An instance of this class is created by app.js when it
- * calls Ext.application(). This is the ideal place to handle application launch and
- * initialization details.
- */
 Ext.define('ControlRoomDesktop.Application', {
-//    extend: 'Ext.app.Application',
     extend: 'Ext.ux.desktop.App',
     login: localStorage.getItem("login"),
     passw: localStorage.getItem("password"),
-    
-    //name: 'ControlRoomDesktop',
     
     requires: [
         'Ext.state.*',
@@ -47,19 +39,22 @@ Ext.define('ControlRoomDesktop.Application', {
     getStartConfig : function() {
         var me = this, ret = me.callParent();
         var toolConfItems = new Array();
-        /*toolConfItems.push({
-            text: 'Выйти',
-            iconCls: 'logout',
-            handler: me.onLogout,
-            scope: me
-        });
-        toolConfItems.push('-');
+        if ((this.login !== null && this.login !== 'anon') || (this.passw !== null && this.passw !== 'anon')) {
+            /*toolConfItems.push({
+                text: 'Выйти',
+                iconCls: 'logout',
+                handler: me.onLogout,
+                scope: me
+            });
+        /*toolConfItems.push('-');
         toolConfItems.push({
             text: 'Настройки',
             iconCls: 'settings',
             handler: me.openSetPage,
             scope: me
         });*/
+        }
+
         
         return Ext.apply(ret, {
             //title: localStorage.getItem("Login"),
@@ -92,26 +87,40 @@ Ext.define('ControlRoomDesktop.Application', {
         var dataFor = new Array();
         // проверка наличия логина и пароля в localStorage
         // также предполагается добавлять элементы в зависимости от клиента ... 
-        // использовать настройки клиентаs
+        // использовать настройки клиента
+        
         // Модули только для зарегистрированных 
         if ((this.login !== null && this.login !== 'anon') || (this.passw !== null && this.passw !== 'anon') ) {
-            //dataFor.push({name: 'RFQ-контоль', iconCls: 'cpu-shortcut', module:'rfq-widg'});            
+            //dataFor.push({name: 'RFQ-контоль', iconCls: 'cpu-shortcut', module:'rfq-widg'});
+            forUser();
+            forAnon();
         }
         // Для анон
         else {
-            dataFor.push({name: 'Охлаждение магнитов', iconCls: 'magn_48', module:'magncool_widg'});
-            dataFor.push({name: 'Охлаждение линз', iconCls: 'cooling_small_l_48', module:'lenscool_widg'});
-            dataFor.push({name: 'Питание линз', iconCls: 'ps_icon_48x48', module:'lcout_widg'});
+            forAnon();
         }
         
         // add context menuItem
         var contextFor = new Array();
         // add logout button
-        contextFor.push({
-            text: 'Выход',
-            handler: me.onLogout,
-            scope: me
-        });
+        if ((this.login !== null && this.login !== 'anon') || (this.passw !== null && this.passw !== 'anon')) {
+            /*contextFor.push({
+                text: 'Выход',
+                handler: me.onLogout,
+                scope: me
+            });*/
+        }
+        
+        function forAnon() {
+            // Модули для анонимного пользователя
+            dataFor.push({name: 'Охлаждение магнитов', iconCls: 'magn_48', module:'magncool_widg'});
+            dataFor.push({name: 'Охлаждение линз', iconCls: 'cooling_small_l_48', module:'lenscool_widg'});
+            dataFor.push({name: 'Питание линз', iconCls: 'ps_icon_48x48', module:'lcout_widg'});
+        }
+        
+        function forUser() {
+            // Модули для зарегистрированного пользователя
+        }
         
         return Ext.apply(ret, {
             wallpaper: 'resources/images/wallpapers/desktop.jpg',
@@ -132,13 +141,25 @@ Ext.define('ControlRoomDesktop.Application', {
         // Модули только для зарегистрированных 
         if ((this.login !== null && this.login !== 'anon') || (this.passw !== null && this.passw !== 'anon') ) {
             //modules.push(new ControlRoomDesktop.widgets.RfqWidget());            
+            forAnon();
+            forUser();
         }
         // Для анон
         else {
+            forAnon();
+        }
+        
+        function forAnon() {
+            // Модули для анонимного пользователя
             modules.push(new ControlRoomDesktop.widgets.LensCoolingWidget());
             modules.push(new ControlRoomDesktop.widgets.MagnetCoolingWidget());
             modules.push(new ControlRoomDesktop.widgets.LcOutWidget());
         }
+        
+        function forUser() {
+            // Модули для зарегистрированного пользователя
+        }
+        
         return modules;       
     },
     //

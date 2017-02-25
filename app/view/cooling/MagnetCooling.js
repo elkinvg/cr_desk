@@ -3,9 +3,10 @@ Ext.define('ControlRoomDesktop.view.cooling.MagnetCooling', {
     extend: 'Ext.panel.Panel',
     requires: [
         'Ext.data.Store',
-        //'Ext.chart.*',
+        'Ext.chart.*',
         'ControlRoomDesktop.view.cooling.MagnetCoolingController',
-        'Ext.layout.container.Absolute'
+        'Ext.layout.container.Absolute',
+        'ControlRoomDesktop.view.cooling.MagnetCoolChart'
     ],
     controller: 'magncooling',
     items: [
@@ -70,6 +71,19 @@ Ext.define('ControlRoomDesktop.view.cooling.MagnetCooling', {
                     x: 150,
                     y: 280,
                     html: '<span style="font-weight:bold; color:black; font-size:250%"> T2_6(7)</span>'
+                },
+                {
+//                    x: 490, 
+//                    y: 450,
+                    // Для меньшей картинки
+                    x: 218, 
+                    y: 525,
+                    xtype: 'button',
+                    reference: 'magnet_graphbut',
+                    name: 'magnet_graphbut',
+                    width: 150,
+                    text: 'Показать график',
+                    handler: 'getChart'
                 }
             ]
         }

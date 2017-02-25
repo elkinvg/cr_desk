@@ -1,16 +1,12 @@
 Ext.define('ControlRoomDesktop.view.cooling.MagnetCoolingController', {
     extend: 'ControlRoomDesktop.view.cooling.AbstractCoolingController',
     alias: 'controller.magncooling',
-    //requires: ['Ext.ux.Mediator'],
-    //
-    //
-    //
+
     init: function () {
         var me = this;
         
         var task = {
             run: function () {
-                //var dStore = Ext.data.StoreManager.lookup('lenscooling_Store');
 
                 if (window.location.hostname === 'localhost') {
                     // For HOME_debug
@@ -32,7 +28,8 @@ Ext.define('ControlRoomDesktop.view.cooling.MagnetCoolingController', {
                         me.getData(ans, Temp);
                     },
                     failure: function (ans) {
-                        console.log("AJAX FAILURE");
+                        if(typeof dbg !== 'undefined') 
+                            console.log("AJAX FAILURE");
                     }
                 });
             },
@@ -42,7 +39,15 @@ Ext.define('ControlRoomDesktop.view.cooling.MagnetCoolingController', {
         var runner = new Ext.util.TaskRunner();
         runner.start(task);
     },
-
+    //
+    //
+    //
+    getChart: function () {
+        // График строится по запросу
+        // При Выводе графика без запроса вылезает глюк, если в течении
+        // 30 секунд не перейти на вкладку        
+        var win = Ext.create('ControlRoomDesktop.view.cooling.MagnetCoolChart');
+    }
 });
     
 
