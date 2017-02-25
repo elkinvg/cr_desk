@@ -8,7 +8,7 @@ Ext.define('ControlRoomDesktop.widgets.LcOutWidget', {
     createWindow: function () {
         var login = localStorage.getItem("login");
         var passw = localStorage.getItem("password");
-        if ( (this.login===null || this.passw===null) || (this.login === 'anon'  || this.passw === 'anon' ) ) {
+        if ( (login===null || passw===null) || (login === 'anon'  || passw === 'anon' ) ) {
             window.open("/lc_ro");
         }
         else {
