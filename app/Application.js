@@ -8,7 +8,7 @@ Ext.define('ControlRoomDesktop.Application', {
         'Ext.window.MessageBox',
         'Ext.window.Toast',
         'Ext.ux.desktop.ShortcutModel',
-        //'ControlRoomDesktop.widgets.RfqWidget',
+//        'ControlRoomDesktop.widgets.RfqWidget',
         'ControlRoomDesktop.widgets.LensCoolingWidget',
         'ControlRoomDesktop.widgets.MagnetCoolingWidget',
         'ControlRoomDesktop.widgets.LcOutWidget',
@@ -123,7 +123,8 @@ Ext.define('ControlRoomDesktop.Application', {
         }
         
         return Ext.apply(ret, {
-            wallpaper: 'resources/images/wallpapers/desktop.jpg',
+//            wallpaper: 'resources/images/wallpapers/desktop.jpg',
+            wallpaper: 'resources/images/wallpapers/desktopLhep.jpg',
             
             shortcuts: Ext.create('Ext.data.Store', {
                 model: 'Ext.ux.desktop.ShortcutModel',
@@ -140,7 +141,7 @@ Ext.define('ControlRoomDesktop.Application', {
         
         // Модули только для зарегистрированных 
         if ((this.login !== null && this.login !== 'anon') || (this.passw !== null && this.passw !== 'anon') ) {
-            //modules.push(new ControlRoomDesktop.widgets.RfqWidget());            
+//            modules.push(new ControlRoomDesktop.widgets.RfqWidget());            
             forAnon();
             forUser();
         }
