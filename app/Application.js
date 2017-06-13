@@ -12,7 +12,9 @@ Ext.define('ControlRoomDesktop.Application', {
         'ControlRoomDesktop.widgets.LensCoolingWidget',
         'ControlRoomDesktop.widgets.MagnetCoolingWidget',
         'ControlRoomDesktop.widgets.LcOutWidget',
-        'Login.view.login.LoginCheck'
+        'Login.view.login.LoginCheck',
+        // in extjs 6.2
+        'Ext.layout.container.boxOverflow.Menu'
     ],
     
 
@@ -113,9 +115,9 @@ Ext.define('ControlRoomDesktop.Application', {
         
         function forAnon() {
             // Модули для анонимного пользователя
-            dataFor.push({name: 'Охлаждение магнитов', iconCls: 'magn_48', module:'magncool_widg'});
-            dataFor.push({name: 'Охлаждение линз', iconCls: 'cooling_small_l_48', module:'lenscool_widg'});
-            dataFor.push({name: 'Питание линз', iconCls: 'ps_icon_48x48', module:'lcout_widg'});
+            dataFor.push({name: 'MagnCool', iconCls: 'magn_48', module:'magncool_widg'}); //'Охлаждение магнитов'
+            dataFor.push({name: 'LensCool', iconCls: 'cooling_small_l_48', module:'lenscool_widg'}); //'Охлаждение линз'
+            dataFor.push({name: 'LensControl', iconCls: 'ps_icon_48x48', module:'lcout_widg'}); //'Питание линз'
         }
         
         function forUser() {
