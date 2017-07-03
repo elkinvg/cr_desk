@@ -13,6 +13,8 @@ Ext.define('ControlRoomDesktop.Application', {
         'ControlRoomDesktop.widgets.MagnetCoolingWidget',
         'ControlRoomDesktop.widgets.LcOutWidget',
         'Login.view.login.LoginCheck',
+        //LHF
+        'ControlRoomDesktop.widgets.BuvLhfControlWidget',
         // in extjs 6.2
         'Ext.layout.container.boxOverflow.Menu'
     ],
@@ -118,6 +120,8 @@ Ext.define('ControlRoomDesktop.Application', {
             dataFor.push({name: 'MagnCool', iconCls: 'magn_48', module:'magncool_widg'}); //'Охлаждение магнитов'
             dataFor.push({name: 'LensCool', iconCls: 'cooling_small_l_48', module:'lenscool_widg'}); //'Охлаждение линз'
             dataFor.push({name: 'LensControl', iconCls: 'ps_icon_48x48', module:'lcout_widg'}); //'Питание линз'
+            // LHF
+            dataFor.push({name: 'BuvLhf', iconCls: 'ps_icon_48x48', module:'lhf_widg'}); // 'Линзы жёсткой фокусировки'
         }
         
         function forUser() {
@@ -157,6 +161,8 @@ Ext.define('ControlRoomDesktop.Application', {
             modules.push(new ControlRoomDesktop.widgets.LensCoolingWidget());
             modules.push(new ControlRoomDesktop.widgets.MagnetCoolingWidget());
             modules.push(new ControlRoomDesktop.widgets.LcOutWidget());
+            // LHF
+            modules.push(new ControlRoomDesktop.widgets.BuvLhfControlWidget());
         }
         
         function forUser() {
