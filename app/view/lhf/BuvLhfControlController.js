@@ -3,7 +3,7 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControlController', {
     alias: 'controller.buv_lhf',
     init: function () {
         var me = this;
-        openws("159.93.50.223/client");
+        openws("159.93.50.223/wslhf");
         
         function openws(urlws) {
             me.ws = Ext.create('Ext.ux.WebSocket', {
