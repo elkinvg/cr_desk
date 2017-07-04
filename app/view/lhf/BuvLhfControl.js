@@ -26,6 +26,22 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControl', {
                 {
                     text: 'Установка U, В',
                     width: 200,
+                    xtype: 'widgetcolumn',
+                    widget: {
+                        xtype: 'container',
+                        layout: 'hbox',
+                        items: [
+                            {
+                                xtype: 'numberfield',
+                                width: 100,
+                            },
+                            {
+                                xtype: 'button',
+                                width: 80,
+                                text: 'Уст. U'
+                            }
+                        ]
+                    }
 //                    items: [
 //                        {
 //                            xtype: 'numberfield',
