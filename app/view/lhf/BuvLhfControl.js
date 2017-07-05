@@ -5,10 +5,11 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControl', {
     alias: 'widget.buv_lhf',
     width: '100%',
     controller: 'buv_lhf',
-    ///
+
     requires: [
         'ControlRoomDesktop.view.lhf.BuvLhfControlController',
-        'Ext.ux.WebSocket'
+        'Ext.ux.WebSocket',
+        'ControlRoomDesktop.store.BuvLhfControlStore'
     ],   
     ///
     layout: {

@@ -5,6 +5,9 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControlController', {
         var me = this;
         openws("159.93.50.223/wslhf");
         
+        // ??? !!! Без этого store не загружается 
+        Ext.create('store.buvlhfstore');
+        
         function openws(urlws) {
             me.ws = Ext.create('Ext.ux.WebSocket', {
                 url: "ws://" + urlws,
@@ -15,26 +18,6 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControlController', {
                     open: function (ws) {
                         if (typeof dbg !== 'undefined')
                             console.log('websocket Open');
-                        
-                        var command = new Object();
-                        command.type_req = "timer_start";
-                        command.msec = 3000;
-                        
-                        // test/lhf/num_*
-                        // test/lhf/b_num_lu_*
-                        var devices = new Object();
-                        
-                        for (var i = 1; i < 12; i++) {
-                            var key = "test/lhf/num_" + i;
-                            devices[key] = {
-                                attr: ["Current","Voltage"]
-                            };
-                        }
-                        command.devices = devices;
-                        var comJson = Ext.util.JSON.encode(command);
-                        
-                        //command.
-                        me.ws.send(comJson);
                     },
                     message: function (ws, data) {
                         if (data === "")
@@ -51,6 +34,15 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControlController', {
     getData: function(data) {
         var me = this;
         console.log("data uploaded");
+        
+        // store сейчас определяется как memory.
+        // Заменено type: 'websocket' на type: 'memory'
+        // type: 'websocket' брался из 'Ext.ux.WebSocketManager'
+        // При определении store как websocket приходилось открывать два сокета
+        // Один для заполнения таблиц, другой для отправления команд на сервер
+        var storeMem = Ext.data.StoreManager.get("buvlhfStore");
+        //здесь принимаются данные с сервера и затем записываются в Store
+        var dataForStore = data.data;
     }
 });
 
