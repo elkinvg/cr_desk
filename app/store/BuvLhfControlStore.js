@@ -10,7 +10,8 @@ Ext.define('ControlRoomDesktop.store.BuvLhfControlStore', {
         'State',
         'stateCurrent',
         'stateProtection',
-        'stateOutput'
+        'stateOutput',
+        'key'
     ],
     
      proxy: {
