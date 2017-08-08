@@ -5,14 +5,15 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControlController', {
         var me = this;
         openws("159.93.50.223/wslhf");
         
+        var first = true;
         // ??? !!! Без этого store не загружается 
-        Ext.create('store.buvlhfstore');
+        //Ext.create('store.buvlhfstore');
         
         function openws(urlws) {
             me.ws = Ext.create('Ext.ux.WebSocket', {
                 url: "ws://" + urlws,
                 autoReconnect: true,
-                autoReconnectInterval: 1000,
+                autoReconnectInterval: 1000,                
                 
                 listeners: {
                     open: function (ws) {
@@ -22,7 +23,10 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControlController', {
                     message: function (ws, data) {
                         if (data === "")
                             return;
-                        me.getData(data);
+                        if (first) {
+                            me.getData(data);
+                            first = false;
+                        }
                     }
                 }
             });
@@ -41,7 +45,7 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControlController', {
         // При определении store как websocket приходилось открывать два сокета
         // Один для заполнения таблиц, другой для отправления команд на сервер
         var storeMem_lu = Ext.data.StoreManager.get("buvlhfStore");
-        var storeMem_n = Ext.data.StoreManager.get("buvlhfStore");
+        //var storeMem_n = Ext.data.StoreManager.get("buvlhfStore");
         //здесь принимаются данные с сервера и затем записываются в Store
         var dataForStore = data.data;
         
@@ -102,10 +106,13 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControlController', {
         });
         
         // ??? !!! Они равны
-        storeMem_n.loadData(ps_lhf_n);
+        //storeMem_n.loadData(ps_lhf_n);
         storeMem_lu.loadData(ps_lhf_lu);
         console.log("storeMem tmp");
         
+        //var mainGrid = me.lookupReference('lhf_lu_Grid');
+        //var store = mainGrid.getStore();
+
 //        dataForStore.forEach(function (item, i, arr) {
 //            var test = 'test;'
 //        });

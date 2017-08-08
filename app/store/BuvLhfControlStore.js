@@ -19,10 +19,13 @@ Ext.define('ControlRoomDesktop.store.BuvLhfControlStore', {
         type: 'memory',
         storeId: 'buvlhfStore',
 
-        reader: {
+        /*reader: {
             type: 'json',
-            rootProperty: 'data'
-        }
+//            rootProperty: 'data'
+            rootProperty: function(data) {
+                console.log("rootProperty: function(data)");
+            }
+        }*/
     }
 });
 

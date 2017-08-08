@@ -12,14 +12,19 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControl', {
         'ControlRoomDesktop.store.BuvLhfControlStore'
     ],   
     ///
-    layout: {
-        type: 'hbox',
-        align: 'stretch'
-    },
+//    layout: {
+//        type: 'hbox',
+//        align: 'stretch'
+//    },
     items: [
         {
             xtype: 'grid',
             title: 'ЛЖФ ЛУ',
+            reference: 'lhf_lu_Grid',
+            id: 'test-grid',
+            store: {
+                type: 'buvlhfstore'
+            },
             columns: [
                 {
                     xtype: 'rownumberer'
@@ -33,10 +38,12 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControl', {
                         layout: 'hbox',
                         items: [
                             {
+                                cls: 'test-frm-sz',
                                 xtype: 'numberfield',
                                 width: 100,
                             },
                             {
+                                cls: 'test-btn',
                                 xtype: 'button',
                                 width: 80,
                                 text: 'Уст. U'
@@ -57,12 +64,14 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControl', {
                 },
                 {
                     text: 'U вых., В',
-                    width: 100
+                    dataIndex: 'Voltage',
+                    width: 200
                 }, {
                     text: 'I вых., А',
-                    width: 100
+                    width: 100,
+                    dataIndex: 'Current'
                 }]
-        }, {
+        }, /*{
             xtype: 'grid',
             title: 'ЛЖФ H',
             columns: [
@@ -80,7 +89,7 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControl', {
                     text: 'I вых., А',
                     width: 100
                 }]
-        }]
+        }*/]
 });
 
 
