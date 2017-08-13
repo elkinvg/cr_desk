@@ -1,7 +1,7 @@
-Ext.define('ControlRoomDesktop.store.BuvLhfControlStore', {
+Ext.define('ControlRoomDesktop.store.BuvLhfNControlStore', {
     extend: 'Ext.data.Store',
-    alias: 'store.buvlhfstore',
-    storeId: 'buvlhfStore',
+    alias: 'store.buvlhfnstore',
+    storeId: 'buvlhfnStore',
     
     fields: [
         'Current',
@@ -17,7 +17,7 @@ Ext.define('ControlRoomDesktop.store.BuvLhfControlStore', {
      proxy: {
         //type: 'websocket',
         type: 'memory',
-        storeId: 'buvlhfStore',
+        storeId: 'buvlhfnStore',
 
         /*reader: {
             type: 'json',

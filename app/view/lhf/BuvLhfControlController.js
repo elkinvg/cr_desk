@@ -23,10 +23,15 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControlController', {
                     message: function (ws, data) {
                         if (data === "")
                             return;
-                        if (first) {
-                            me.getData(data);
+                        //if (first) {
+                            me.getData(data, first);
                             first = false;
-                        }
+                            return;
+                        //}
+
+                    },
+                    close: function (ws) {
+                        console.log('websocket Close');
                     }
                 }
             });
@@ -35,7 +40,7 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControlController', {
     //
     //
     //
-    getData: function(data) {
+    getData: function(data, first) {
         var me = this;
         console.log("data uploaded");
         
@@ -44,8 +49,8 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControlController', {
         // type: 'websocket' брался из 'Ext.ux.WebSocketManager'
         // При определении store как websocket приходилось открывать два сокета
         // Один для заполнения таблиц, другой для отправления команд на сервер
-        var storeMem_lu = Ext.data.StoreManager.get("buvlhfStore");
-        //var storeMem_n = Ext.data.StoreManager.get("buvlhfStore");
+        var storeMem_lu = Ext.data.StoreManager.get("buvlhfluStore");
+        var storeMem_n = Ext.data.StoreManager.get("buvlhfnStore");
         //здесь принимаются данные с сервера и затем записываются в Store
         var dataForStore = data.data;
         
@@ -107,8 +112,19 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControlController', {
         
         // ??? !!! Они равны
         //storeMem_n.loadData(ps_lhf_n);
-        storeMem_lu.loadData(ps_lhf_lu);
+        if (first) {
+            storeMem_lu.loadData(ps_lhf_lu);
+            storeMem_n.loadData(ps_lhf_n);
+        }
+        var mainGrid = me.lookupReference('lhf_lu_Grid');
+        var record = mainGrid.getSelectionModel();
+        var models = mainGrid.getStore().getRange();
+        models[0].set("Current",12);
+
+        //var aaa = mainGrid.getView().getRow(0);
+
         console.log("storeMem tmp");
+
         
         //var mainGrid = me.lookupReference('lhf_lu_Grid');
         //var store = mainGrid.getStore();
@@ -116,6 +132,14 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControlController', {
 //        dataForStore.forEach(function (item, i, arr) {
 //            var test = 'test;'
 //        });
+    },
+    panelDestroyed: function (e, eOpts) {
+        console.log('BUVLhf Destoyed');
+        var me = this;
+        var ws = me.ws;
+        ws.close();
+        console.log('WS Closed');
+        //this.runner.destroy();
     }
 });
 

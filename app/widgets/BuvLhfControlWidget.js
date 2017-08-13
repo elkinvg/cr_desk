@@ -4,7 +4,7 @@ Ext.define('ControlRoomDesktop.widgets.BuvLhfControlWidget', {
         'ControlRoomDesktop.view.lhf.BuvLhfControl'
     ],
     id: 'lhf_widg',
-    
+
     init: function () {
         this.launcher = {
             text: 'ЛЖФ пучка',
@@ -31,7 +31,6 @@ Ext.define('ControlRoomDesktop.widgets.BuvLhfControlWidget', {
 //                    borderStyle: 'solid',
                     borderWidth: '3px'
                 },
-                
                 height: 500,
                 //minHeight: 500,
                 //maxHeight: 550,
