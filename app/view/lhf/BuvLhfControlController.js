@@ -138,6 +138,9 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControlController', {
 //            var test = 'test;'
 //        });
     },
+    //
+    //
+    //
     panelDestroyed: function (e, eOpts) {
         console.log('BUVLhf Destoyed');
         var me = this;
@@ -145,7 +148,47 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControlController', {
         ws.close();
         console.log('WS Closed');
         //this.runner.destroy();
-    }
+    },
+    //
+    //
+    //
+    forrownumber: function (a, b, c) {
+        console.debug(a,b,c);
+        if (b.rowIndex < 11)
+            return b.rowIndex;
+        if (b.rowIndex == 11)
+            return "11/1";
+        if (b.rowIndex == 12)
+            return "11/2";
+    },
+    //
+    //
+    //
+    setStatusColor: function (val, meta) {
+        // установка цветового индикатора статуса
+        if (val === "FAULT")
+            meta.style = "background-color:red;";
+        if (val === "ON")
+            meta.style = "background-color:green;";
+        if (val === "OFF")
+            meta.style = "background-color:orange;";
+
+        return "";
+    },
+    //
+    //
+    //
+    boldnnum: function (val,meta,data) {
+        // Здесь производится проверка разницы токов
+        // Если разница превышает заданный уровень - предупрждение
+        try {
+            var newval = val.toFixed(3);
+            return newval;
+        }
+        catch (e) {
+            return "---";
+        }
+    },
 });
 
 

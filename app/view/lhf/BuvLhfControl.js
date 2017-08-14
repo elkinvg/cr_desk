@@ -23,20 +23,25 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControl', {
         type: 'hbox',
         align: 'stretch'
     },
-    bodyPadding: 5,
+    //bodyPadding: 5,
     items: [
         {
             xtype: 'grid',
-            width: 550,
+            width: 500,
             title: 'ЛЖФ ЛУ',
             reference: 'lhf_lu_Grid',
             id: 'test-grid',
+            margin: '0 10 0 0',
+            //style: 'border: solid 1px',
             store: {
                 type: 'buvlhflustore'
             },
             columns: [
                 {
-                    xtype: 'rownumberer'
+                    xtype: 'rownumberer',
+                    width: 50,
+                    renderer: 'forrownumber',
+                    align: "center"
                 },
                 {
                     text: 'Установка U, В',
@@ -63,28 +68,37 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControl', {
                 {
                     text: 'U вых., В',
                     dataIndex: 'Voltage',
-                    width: 200
+                    width: 100,
+                    align: "center",
+                    renderer: 'boldnnum'
                 }, {
                     text: 'I вых., А',
                     width: 100,
-                    dataIndex: 'Current'
+                    dataIndex: 'Current',
+                    align: "center",
+                    renderer: 'boldnnum'
+                },
+                {
+                    dataIndex: 'State',
+                    flex: 1,
+                    renderer: 'setStatusColor'
                 }
             ]
         },
         {
             xtype: 'grid',
-            width: 550,
+            width: 500,
             reference: 'lhf_n_Grid',
             title: 'ЛЖФ H',
+            margin: '0 0 0 10',
             store: {
                 type: 'buvlhfnstore'
             },
             columns: [
                 {
                     xtype: 'rownumberer',
-                    renderer: function (a,b,c) {
-                        return 'x';
-                    }
+                    width: 50,
+                    align: "center"
                 },
                 {
                     text: 'Установка U, В',
@@ -111,11 +125,20 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControl', {
                 {
                     text: 'U вых., В',
                     dataIndex: 'Voltage',
-                    width: 200
+                    width: 100,
+                    align: "center",
+                    renderer: 'boldnnum'
                 }, {
                     text: 'I вых., А',
                     width: 100,
-                    dataIndex: 'Current'
+                    dataIndex: 'Current',
+                    align: "center",
+                    renderer: 'boldnnum'
+                },
+                {
+                    dataIndex: 'State',
+                    flex: 1,
+                    renderer: 'setStatusColor'
                 }
             ]
         }

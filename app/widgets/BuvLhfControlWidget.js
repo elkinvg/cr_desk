@@ -22,7 +22,8 @@ Ext.define('ControlRoomDesktop.widgets.BuvLhfControlWidget', {
                 stateful: true,
                 id: 'buvlhf',
                 title: 'Управление ЛЖФ пучка в ЛУ-20',
-                width: 1500,
+                width: 1024,
+                height: 630,
                 //minWidth: 500,
                 //maxWidth: 550,
                 border: true,
@@ -31,7 +32,6 @@ Ext.define('ControlRoomDesktop.widgets.BuvLhfControlWidget', {
 //                    borderStyle: 'solid',
                     borderWidth: '3px'
                 },
-                height: 500,
                 //minHeight: 500,
                 //maxHeight: 550,
                 //minWidth: 650,
