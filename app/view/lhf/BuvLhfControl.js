@@ -81,7 +81,10 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControl', {
             },
             columns: [
                 {
-                    xtype: 'rownumberer'
+                    xtype: 'rownumberer',
+                    renderer: function (a,b,c) {
+                        return 'x';
+                    }
                 },
                 {
                     text: 'Установка U, В',

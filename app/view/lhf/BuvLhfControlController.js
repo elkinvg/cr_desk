@@ -23,11 +23,9 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControlController', {
                     message: function (ws, data) {
                         if (data === "")
                             return;
-                        //if (first) {
-                            me.getData(data, first);
-                            first = false;
-                            return;
-                        //}
+                        me.getData(data, first);
+                        first = false;
+                        return;
 
                     },
                     close: function (ws) {
@@ -109,19 +107,26 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControlController', {
             };
             //var new_key = 
         });
-        
-        // ??? !!! Они равны
-        //storeMem_n.loadData(ps_lhf_n);
+
+        // сортировка по ключам
+        ps_lhf_lu.sort(function (a, b) {
+            return a.key - b.key;
+        });
+        ps_lhf_n.sort(function (a, b) {
+            return a.key - b.key;
+        });
+
         if (first) {
             storeMem_lu.loadData(ps_lhf_lu);
             storeMem_n.loadData(ps_lhf_n);
         }
+
         var mainGrid = me.lookupReference('lhf_lu_Grid');
         var record = mainGrid.getSelectionModel();
         var models = mainGrid.getStore().getRange();
-        models[0].set("Current",12);
 
-        //var aaa = mainGrid.getView().getRow(0);
+        // ??? !!! test
+        models[0].set("Current",12);
 
         console.log("storeMem tmp");
 

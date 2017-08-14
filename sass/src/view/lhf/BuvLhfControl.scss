@@ -13,8 +13,15 @@ and open the template in the editor.
   background-color: green;
 }*/
 
-/*.x-grid-row .x-grid-cell {
-    font-size: 10px;
+.x-grid-row .x-grid-cell {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.x-grid-cell-inner {
+  overflow: hidden;
+  padding: 1px 2px;
+  white-space: nowrap;
 }
 
 .test-btn .x-btn-inner {
@@ -22,8 +29,9 @@ and open the template in the editor.
 }
 
 .test-frm-sz .x-form-text {
-    font-size: 10px;
-}*/
+  font-size: 12px;
+  font-weight: bold;
+}
 
 /*.x-panel-header-text-default {
     color: #333333;
