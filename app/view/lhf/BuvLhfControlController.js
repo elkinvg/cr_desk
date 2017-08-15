@@ -5,7 +5,7 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControlController', {
         var me = this;
         openws("159.93.50.223/wslhf");
         
-        var first = true;
+        var firstnfull = true;
         // ??? !!! Без этого store не загружается 
         //Ext.create('store.buvlhfstore');
         
@@ -23,13 +23,13 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControlController', {
                     message: function (ws, data) {
                         if (data === "")
                             return;
-                        me.getData(data, first);
-                        first = false;
+                        firstnfull = me.getData(data, firstnfull);
                         return;
 
                     },
                     close: function (ws) {
-                        console.log('websocket Close');
+                        if (typeof dbg !== 'undefined')
+                            console.log('websocket Close');
                     }
                 }
             });
@@ -40,7 +40,9 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControlController', {
     //
     getData: function(data, first) {
         var me = this;
-        console.log("data uploaded");
+
+        if (typeof dbg !== 'undefined')
+            console.log("data uploaded");
         
         // store сейчас определяется как memory.
         // Заменено type: 'websocket' на type: 'memory'
@@ -105,7 +107,6 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControlController', {
                 dataObj["key"] = keyN;
                 return dataObj;
             };
-            //var new_key = 
         });
 
         // сортировка по ключам
@@ -119,41 +120,53 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControlController', {
         if (first) {
             storeMem_lu.loadData(ps_lhf_lu);
             storeMem_n.loadData(ps_lhf_n);
+            if (ps_lhf_n.length == 12 && ps_lhf_lu.length == 13)
+                first = false;
+            return first;
         }
 
-        var mainGrid = me.lookupReference('lhf_lu_Grid');
-        var record = mainGrid.getSelectionModel();
-        var models = mainGrid.getStore().getRange();
 
-        // ??? !!! test
-        models[0].set("Current",12);
 
-        console.log("storeMem tmp");
-
+        // Если данные с вебсокета соответствуют запросу
+        // В данный момент для ps_lhf_n данные с 12ти источников
+        //                 для ps_lhf_lu данные с 13ти источников
         
-        //var mainGrid = me.lookupReference('lhf_lu_Grid');
-        //var store = mainGrid.getStore();
+        if (ps_lhf_n.length == 12 && ps_lhf_lu.length == 13) {
+            var mainGrid = me.lookupReference('lhf_lu_Grid');
+            var record = mainGrid.getSelectionModel();
+            var models = mainGrid.getStore().getRange();
+            // models[0].set("Current", 12);
+            setData(models,ps_lhf_lu);
+            
+            function setData(inpmodel,dataarr) {
+                for ( i=0; i<inpmodel.length; i++) {
+                    inpmodel[i].data = dataarr[i];
+                }
+            }
+        }
 
-//        dataForStore.forEach(function (item, i, arr) {
-//            var test = 'test;'
-//        });
+        if (typeof dbg !== 'undefined')
+            console.log("storeMem tmp");
+
+        return first;
     },
     //
     //
     //
     panelDestroyed: function (e, eOpts) {
-        console.log('BUVLhf Destoyed');
+        if (typeof dbg !== 'undefined')
+            console.log('BUVLhf Destoyed');
         var me = this;
         var ws = me.ws;
         ws.close();
-        console.log('WS Closed');
+        if (typeof dbg !== 'undefined')
+            console.log('WS Closed');
         //this.runner.destroy();
     },
     //
     //
     //
-    forrownumber: function (a, b, c) {
-        console.debug(a,b,c);
+    forrownumber: function (a, b) {
         if (b.rowIndex < 11)
             return b.rowIndex;
         if (b.rowIndex == 11)

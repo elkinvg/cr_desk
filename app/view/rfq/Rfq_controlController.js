@@ -268,21 +268,24 @@ Ext.define('ControlRoomDesktop.view.rfq.Rfq_controlController', {
     //
     //
     ventilatorClick: function () {
-        console.log('ventilatorClick');
+        if (typeof dbg !== 'undefined')
+            console.log('ventilatorClick');
         this.functionForClick("M3");
     },
     //
     //
     //
     heatClick: function () {
-        console.log('heatClick');
+        if (typeof dbg !== 'undefined')
+            console.log('heatClick');
         this.functionForClick("M1");
     },
     //
     //
     //
     bhmClick: function () {
-        console.log('bhmClick');
+        if (typeof dbg !== 'undefined')
+            console.log('bhmClick');
         this.functionForClick("M5");
     },
     //
@@ -336,10 +339,12 @@ Ext.define('ControlRoomDesktop.view.rfq.Rfq_controlController', {
             success: function (response, opts) {
                 var obj = Ext.decode(response.responseText);
                 //console.dir(obj);
-                console.log(obj);
+                if (typeof dbg !== 'undefined')
+                    console.log(obj);
             },
             failure: function (response, opts) {
-                console.log('server-side failure with status code ' + response.status);
+                if (typeof dbg !== 'undefined')
+                    console.log('server-side failure with status code ' + response.status);
             }
         });
     },
@@ -373,7 +378,8 @@ Ext.define('ControlRoomDesktop.view.rfq.Rfq_controlController', {
     //
     panelDestroyed: function (e, eOpts) {
         this.runner.destroy();
-        console.log('RFQ-panel Destoyed');
+        if (typeof dbg !== 'undefined')
+            console.log('RFQ-panel Destoyed');
     }
 });
 
