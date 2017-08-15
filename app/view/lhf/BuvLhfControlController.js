@@ -167,11 +167,17 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControlController', {
     //
     //
     forrownumber: function (a, b) {
-        if (b.rowIndex < 11)
-            return b.rowIndex;
-        if (b.rowIndex == 11)
+        return this.getRowNumberStr(b.rowIndex)
+    },
+    //
+    //
+    //
+    getRowNumberStr: function (inpStr) {
+        if (inpStr < 11)
+            return inpStr;
+        if (inpStr == 11)
             return "11/1";
-        if (b.rowIndex == 12)
+        if (inpStr == 12)
             return "11/2";
     },
     //
@@ -201,6 +207,83 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControlController', {
         catch (e) {
             return "---";
         }
+    },
+    //
+    //
+    //
+    cellClickProc: function (grid, td, cellIndex, record, tr, rowIndex, e, eOpts)
+    {
+        // or lhf-n-grid
+        // or lhf-lu-grid
+        var grid_id = grid.grid.id;
+        var dataIndex = grid.headerCt.getGridColumns()[cellIndex].dataIndex;
+
+        if (dataIndex !== "State")
+            return;
+
+        var state = record.data.State;
+
+        if (grid_id === "lhf-lu-grid")
+            var psId = this.getRowNumberStr(record.data.key-1);
+        else
+            var psId = record.data.key;
+
+        if (state === "FAULT") {
+            statFunc(state,psId,"??? !!!");
+            return;
+        }
+
+        function statFunc(state, id, device) {
+            if (state === 'ON') {
+                if(typeof dbg !== 'undefined') console.log('STATUS ON');
+                var messageIn = 'Источник включён, вы хотите его выключить?';
+                var buttonIn = Ext.Msg.YESNO;
+                var command = new Object();
+                command.command = "OffDevice";
+                command.argin = device;
+                var buttonIn = Ext.Msg.YESNO;
+                var icon = Ext.Msg.QUESTION;
+                var butText = {
+                    yes: "Да",
+                    no: "Нет"
+                }
+            } else if (state === 'OFF') {
+                if(typeof dbg !== 'undefined') console.log('STATUS OFF');
+                var messageIn = 'Источник выключен, вы хотите его включить?';
+                var buttonIn = Ext.Msg.YESNO;
+                var command = new Object();
+                command.command = "OnDevice";
+                command.argin = device;
+                var buttonIn = Ext.Msg.YESNO;
+                var icon = Ext.Msg.QUESTION;
+                var butText = {
+                    yes: "Да",
+                    no: "Нет"
+                };
+            } else if (state === 'FAULT') {
+                if(typeof dbg !== 'undefined') console.log('STATUS FAULT');
+                var messageIn = 'связь с Источником ' + id + ' нарушена';
+                var buttonIn = Ext.Msg.OK;
+                var icon = Ext.Msg.ERROR;
+                //return;
+            }
+            Ext.Msg.show({
+                title: 'Состояние источника ' + id,
+                message: messageIn,
+                buttons: buttonIn,
+                icon: icon,
+                buttonText: butText,
+                fn: function (btn) {
+                    if (btn === 'yes') {
+                        var comJson = Ext.util.JSON.encode(command);
+                        me.ws.send(comJson);
+                        if(typeof dbg !== 'undefined') console.log('Yes pressed');
+                    } else if (btn === 'no') {
+                        if(typeof dbg !== 'undefined') console.log('No pressed');
+                    }
+                }
+            });
+        };
     },
 });
 

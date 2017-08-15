@@ -30,11 +30,14 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControl', {
             width: 500,
             title: 'ЛЖФ ЛУ',
             reference: 'lhf_lu_Grid',
-            id: 'test-grid',
+            id: 'lhf-lu-grid',
             margin: '0 10 0 0',
             //style: 'border: solid 1px',
             store: {
                 type: 'buvlhflustore'
+            },
+            listeners: {
+                cellclick: 'cellClickProc'
             },
             columns: [
                 {
@@ -55,6 +58,9 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControl', {
                                 cls: 'test-frm-sz',
                                 xtype: 'numberfield',
                                 width: 100,
+                                minValue: 0,
+                                maxValue: 500,
+                                stepValue: 10
                             },
                             {
                                 cls: 'test-btn',
@@ -89,10 +95,14 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControl', {
             xtype: 'grid',
             width: 500,
             reference: 'lhf_n_Grid',
+            id: 'lhf-n-grid',
             title: 'ЛЖФ H',
             margin: '0 0 0 10',
             store: {
                 type: 'buvlhfnstore'
+            },
+            listeners: {
+                cellclick: 'cellClickProc'
             },
             columns: [
                 {
@@ -112,6 +122,9 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControl', {
                                 cls: 'test-frm-sz',
                                 xtype: 'numberfield',
                                 width: 100,
+                                minValue: 0,
+                                maxValue: 500,
+                                stepValue: 10
                             },
                             {
                                 cls: 'test-btn',
