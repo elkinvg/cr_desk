@@ -2,8 +2,13 @@
 // GET-> adddress/?dbg=1
 var get_params = Ext.urlDecode(location.search.substring(1));
 
-if (get_params.dbg === '1') {
+if (get_params.dbg !== undefined) {
     dbg = "";
+}
+
+
+if (get_params.anon !== undefined) {
+    anon_user = "";
 }
 
 
@@ -33,9 +38,13 @@ Ext.define('ControlRoomDesktop.Application', {
         
         if (this.login===null || this.passw===null) {
             // Пока без авторизации
-            /*Ext.widget('logincheck');
-            return;*/
-            this.login = 'anon';
+            if (typeof anon_user === 'undefined') {
+                Ext.widget('logincheck');
+                return;
+            }
+            else {
+                this.login = 'anon';
+            }
         }
         Ext.toast({
             html: 'Hello, ' + this.login,
@@ -130,7 +139,7 @@ Ext.define('ControlRoomDesktop.Application', {
             dataFor.push({name: 'LensCool', iconCls: 'cooling_small_l_48', module:'lenscool_widg'}); //'Охлаждение линз'
             dataFor.push({name: 'LensControl', iconCls: 'ps_icon_48x48', module:'lcout_widg'}); //'Питание линз'
             // LHF
-            dataFor.push({name: 'BuvLhf', iconCls: 'ps_icon_48x48', module:'lhf_widg'}); // 'Линзы жёсткой фокусировки'
+            dataFor.push({name: 'BuvLhf', iconCls: 'buvlhf_48x48', module:'lhf_widg'}); // 'Линзы жёсткой фокусировки'
         }
         
         function forUser() {

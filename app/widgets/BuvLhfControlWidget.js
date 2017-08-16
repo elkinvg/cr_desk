@@ -8,7 +8,7 @@ Ext.define('ControlRoomDesktop.widgets.BuvLhfControlWidget', {
     init: function () {
         this.launcher = {
             text: 'ЛЖФ пучка',
-            iconCls: 'cooling_small_48'
+            iconCls: 'buvlhf_32x32'
         };
     },
 
