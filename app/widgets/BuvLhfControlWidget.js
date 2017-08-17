@@ -14,11 +14,11 @@ Ext.define('ControlRoomDesktop.widgets.BuvLhfControlWidget', {
 
     createWindow: function () {
         var desktop = this.app.getDesktop();
-        var win = desktop.getWindow('lenscool');
+        var win = desktop.getWindow('buvlhf');
         if (!win) {
             win = desktop.createWindow({
                 stateId: 'buvlhf',
-                iconCls: 'cooling_small_32',
+                iconCls: 'buvlhf_32x32',
                 stateful: true,
                 id: 'buvlhf',
                 title: 'Управление ЛЖФ пучка в ЛУ-20',
