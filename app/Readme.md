@@ -1,3 +1,11 @@
+# BuvLhf
+Для работы `BuvLhf`, conf файл для apache (proxy) на прослушиваемом сервере должен содержать:
+
+```apacheconfig
+ProxyPass /wslhf ws://host/wslhf
+ProxyPassReverse  /wslhf ws://host/wslhf
+```
+
 # ./controller
 
 This folder contains the application's global controllers. ViewControllers are located

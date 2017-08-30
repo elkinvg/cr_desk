@@ -9,6 +9,9 @@ Ext.define('ControlRoomDesktop.view.cooling.MagnetCooling', {
         'ControlRoomDesktop.view.cooling.MagnetCoolChart'
     ],
     controller: 'magncooling',
+    listeners: {
+        removed: 'panelDestroyed'
+    },
     items: [
         {
             xtype: 'component',

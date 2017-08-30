@@ -12,6 +12,9 @@ Ext.define('ControlRoomDesktop.view.cooling.LensCooling', {
         'ControlRoomDesktop.view.cooling.LensCoolChart'
     ],
     controller: 'lenscooling',
+    listeners: {
+        removed: 'panelDestroyed'
+    },
     //store: 'lenscooling_Store',
     items: [
         {

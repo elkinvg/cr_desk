@@ -38,6 +38,8 @@ Ext.define('ControlRoomDesktop.view.cooling.MagnetCoolingController', {
 
         var runner = new Ext.util.TaskRunner();
         runner.start(task);
+        me.runner = runner;
+        me.task = task;
     },
     //
     //
@@ -47,6 +49,15 @@ Ext.define('ControlRoomDesktop.view.cooling.MagnetCoolingController', {
         // При Выводе графика без запроса вылезает глюк, если в течении
         // 30 секунд не перейти на вкладку        
         var win = Ext.create('ControlRoomDesktop.view.cooling.MagnetCoolChart');
+    },
+    //
+    //
+    //
+    panelDestroyed: function (e, eOpts) {
+        if (typeof dbg !== 'undefined')
+            console.log('magncooling Destoyed');
+        var me = this;
+        me.runner.stop(me.task);
     }
 });
     

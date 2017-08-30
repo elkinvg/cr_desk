@@ -44,6 +44,8 @@ Ext.define('ControlRoomDesktop.view.cooling.LensCoolingController', {
 
         var runner = new Ext.util.TaskRunner();
         runner.start(task);
+        me.runner = runner;
+        me.task = task;
     },
     //
     //
@@ -53,5 +55,14 @@ Ext.define('ControlRoomDesktop.view.cooling.LensCoolingController', {
         // При Выводе графика без запроса вылезает глюк, если в течении
         // 30 секунд не перейти на вкладку        
         var win = Ext.create('ControlRoomDesktop.view.cooling.LensCoolChart');
+    },
+    //
+    //
+    //
+    panelDestroyed: function (e, eOpts) {
+        if (typeof dbg !== 'undefined')
+            console.log('lencool Destoyed');
+        var me = this;
+        me.runner.stop(me.task);
     }
 });

@@ -1,0 +1,48 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 13.07.2017, 12:10:51
+    Author     : elkin
+*/
+/*#test-grid .x-grid3-cell-inner {
+  font-size: 8px;
+  color: red;
+  background-color: green;
+}*/
+
+.x-grid {
+  border-style: solid;
+  border-width: 1px;
+  border-color: #c4c4c4;
+}
+
+.x-grid-row .x-grid-cell {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.x-grid-cell-inner {
+  overflow: hidden;
+  padding: 1px 2px;
+  white-space: nowrap;
+}
+
+.test-btn .x-btn-inner {
+    font-size: 10px;
+}
+
+.test-frm-sz .x-form-text {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/*.x-panel-header-text-default {
+    color: #333333;
+    font-family: tahoma,arial,verdana,sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 17px;
+}*/
