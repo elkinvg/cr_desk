@@ -4,18 +4,21 @@ Ext.define('ControlRoomDesktop.view.cooling.MagnetCoolingController', {
 
     init: function () {
         var me = this;
+
+        var urlNparams = me.getUrlAndParamsForTemperature();
+
+        if (urlNparams.length !== 2) {
+            me.toastActive("MagnetCooling","Невозможно получить URl, возвращаемый массив из getUrlAndParamsForTemperature имеет неправильный размер", "red");
+            return;
+        }
         
         var task = {
             run: function () {
 
-                if (window.location.hostname === 'localhost') {
-                    // For HOME_debug
-                    var urlLensCooling = '/clone/desk_dbg.php';
-                } else {
-                    var urlLensCooling = '/cr_conf/termo/reading_of_oil_temp.php';
-                }
+                //var urlLensCooling = '/cr_conf/termo/reading_of_oil_temp.php';
                 Ext.Ajax.request({
-                    url: urlLensCooling,
+                    url: urlNparams[0],
+                    params: urlNparams[1],
                     method: 'GET',
                     success: function (ans) {
                         var Temp = {};
@@ -30,6 +33,15 @@ Ext.define('ControlRoomDesktop.view.cooling.MagnetCoolingController', {
                     failure: function (ans) {
                         if(typeof dbg !== 'undefined') 
                             console.log("AJAX FAILURE");
+                        try {
+                            var respData = Ext.JSON.decode(ans.responseText);
+                            var warn_mess = respData.err_mess;
+                        }
+                        catch(e){
+                            me.toastActive("LensCooling","Неизвестная ошибка от сервера", "red");
+                            return;
+                        }
+                        me.toastActive("LensCooling",warn_mess, "red");
                     }
                 });
             },
@@ -57,7 +69,8 @@ Ext.define('ControlRoomDesktop.view.cooling.MagnetCoolingController', {
         if (typeof dbg !== 'undefined')
             console.log('magncooling Destoyed');
         var me = this;
-        me.runner.stop(me.task);
+        if (me.runner !== undefined)
+            me.runner.stop(me.task);
     }
 });
     

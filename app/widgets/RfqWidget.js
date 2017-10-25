@@ -8,26 +8,31 @@ Ext.define('ControlRoomDesktop.widgets.RfqWidget', {
     init: function () {
         this.launcher = {
             text: 'RFQ-контроль',
-            iconCls: 'icon-grid'
+            iconCls: 'rfq_32x32'
         };
     },
     
     createWindow: function () {
         var desktop = this.app.getDesktop();
-        var win = desktop.getWindow('sensors-grid');
+        var win = desktop.getWindow('rfqwidg');
         if (!win) {
             win = desktop.createWindow({
-                stateId: 'stateSensorsGrid',
-                iconCls: 'icon-grid',
+                stateId: 'rfqwidg',
+                iconCls: 'rfq_32x32',
                 stateful: true,
-                id: 'sensors-grid',
-                title: 'RFQ',
-                width: 700,
-                minWidth: 650,
-                height: 660,
+                id: 'rfqwidg',
+                title: 'Управление модулятором RFQ',
+                // WIDTH
+                width: 525,
+                minWidth: 525,
+                maxWidth: 525,
+                // HEIGHT
+                height: 760,
+                minHeight: 760,
+                maxHeight: 760,
                 items: [{
                         xtype: 'rfq_control'
-                    }],
+                    }]
             });
             win.show();
         }

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 Ext.define('ControlRoomDesktop.view.rfq.Rfq_controlModel', {
     extend: 'Ext.app.ViewModel',

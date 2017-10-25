@@ -1,6 +1,7 @@
 Ext.define('ControlRoomDesktop.view.cooling.LensCoolingController', {
     extend: 'ControlRoomDesktop.view.cooling.AbstractCoolingController',
     alias: 'controller.lenscooling',
+
     init: function () {
         var me = this;
         if(typeof dbg !== 'undefined') 
@@ -9,18 +10,26 @@ Ext.define('ControlRoomDesktop.view.cooling.LensCoolingController', {
 
         Ext.create('store.coolingstore');
 
+        var urlNparams = me.getUrlAndParamsForTemperature();
+
+
+
+        if (urlNparams.length !== 2) {
+            me.toastActive("LensCooling","Невозможно получить URl, возвращаемый массив из getUrlAndParamsForTemperature имеет неправильный размер", "red");
+            return;
+        }
+
+
+
         var task = {
             run: function () {
                 //var dStore = Ext.data.StoreManager.lookup('lenscooling_Store');
 
-                if (window.location.hostname === 'localhost') {
-                    // For HOME_debug
-                    var urlLensCooling = '/clone/desk_dbg.php';
-                } else {
-                    var urlLensCooling = '/cr_conf/termo/reading_of_oil_temp.php';
-                }
+                //var urlLensCooling = '/cr_conf/termo/reading_of_oil_temp.php';
+
                 Ext.Ajax.request({
-                    url: urlLensCooling,
+                    url: urlNparams[0],
+                    params: urlNparams[1],
                     method: 'GET',
                     success: function (ans) {
                         var Temp = {};
@@ -36,6 +45,15 @@ Ext.define('ControlRoomDesktop.view.cooling.LensCoolingController', {
                     failure: function (ans) {
                         if(typeof dbg !== 'undefined') 
                             console.log("AJAX FAILURE");
+                        try {
+                            var respData = Ext.JSON.decode(ans.responseText);
+                            var warn_mess = respData.err_mess;
+                        }
+                        catch(e){
+                            me.toastActive("LensCooling","Неизвестная ошибка от сервера", "red");
+                            return;
+                        }
+                        me.toastActive("LensCooling",warn_mess, "red");
                     }
                 });
             },

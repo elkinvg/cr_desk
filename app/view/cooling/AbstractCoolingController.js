@@ -1,18 +1,64 @@
 Ext.define('ControlRoomDesktop.view.cooling.AbstractCoolingController', {
     extend: 'Ext.app.ViewController',
     //mixins: ['Ext.ux.mixin.Mediator'],
-
+    mixins: {
+        commonMix: 'ControlRoomDesktop.common.CommonMixController'
+    },
 
     getData: function (jsonData, Temp) {
         // Температура, выше которой высылается предупрдление
+        var me= this;
         var warn_temp = ControlRoomDesktop.app.getSettFromLocalStorage("warning_temperature");
 
 
         try {
             var decodedString = Ext.decode(jsonData.responseText);
-            var success = decodedString.success;
+            var temperature = decodedString.data;
 
-            if (success === true) {
+            if (me.device_for_req === undefined || me.rest_or_wshost === undefined) {
+                var tango_device = decodedString.tango_device;
+                var rest_or_wshost = decodedString.rest_or_wshost;
+
+                if (tango_device === undefined || rest_or_wshost === undefined) {
+                    warn_temperature_mess("Неправильные json-данные с сервера<br>нет ключа tango_device или rest_or_wshost");
+                    return;
+                }
+
+                me.device_for_req = tango_device;
+                me.rest_or_wshost = rest_or_wshost;
+            }
+
+            if (temperature === undefined)
+            {
+                warn_temperature_mess("Неправильные json-данные с сервера<br>нет ключа data или tango_device или rest_or_wshost");
+                return;
+            }
+
+            // На данный момент с сервера приходят данные с 14 значениями
+
+            var templength = 14;
+
+            if (temperature.length !== templength)
+            {
+                warn_temperature_mess("Длина массива данных с температурами должна быть 14");
+                return;
+            }
+
+            var tempIn = {};
+            for (var i = 0; i < templength; i++){
+                if (i<7) {
+                    var key = "T_" + (i+1);
+                }
+                else {
+                    var key = "T2_" + (i-6);
+                }
+                tempIn[key] = temperature[i];
+            }
+
+            info_temperature_mess();
+            updateDataTemp(tempIn);
+
+            /*if (success === true) {
                 if (decodedString.argout === undefined) {
                     warn_temperature_mess();
                 }
@@ -20,8 +66,9 @@ Ext.define('ControlRoomDesktop.view.cooling.AbstractCoolingController', {
                     info_temperature_mess();
                     updateDataTemp(decodedString.argout);
                 }
+
                 
-            }
+            }*/
         } catch (e) {
             warn_temperature_mess();
         }
@@ -105,5 +152,43 @@ Ext.define('ControlRoomDesktop.view.cooling.AbstractCoolingController', {
                         });
             }
         }
+    },
+    //
+    //
+    //
+    getUrlAndParamsForTemperature: function () {
+        /// Происходит запрос на /cr_conf/scripts/get_data_from_restds.php
+        /// В этом скрипте запрос перенаправляется на RESTDS сервер
+        /// В БД должны быть прописаны для "alias": "oil_temp"
+        ///                                 "host_from_db" : "oil_temp_rest"
+        var me = this;
+
+        if (me.device_for_req === undefined || me.rest_or_wshost === undefined) {
+            var params = {
+                "type_req" : "restds_read_attrs",
+                "is_first_req": true,
+                "attrs": "oil_temperature",
+                "host_from_db": "oil_temp_rest",
+                "alias": "oil_temp"
+            }
+        }
+        else {
+            var params = {
+                "type_req" : "restds_read_attrs",
+                "attrs": "oil_temperature",
+                "device_for_req": me.device_for_req,
+                "rest_or_wshost": me.rest_or_wshost
+            }
+        }
+
+        // Для работы вне института использовать локальный php
+        // должен также быть задан GET параметр home
+        if(typeof HOME_DEBUG !== 'undefined') {
+            var url_for_rest_req = "/cr_conf/home-debug.php";
+        }
+        else
+            var url_for_rest_req = "/cr_conf/scripts/get_data_from_restds.php";
+
+        return [url_for_rest_req,params];
     }
 });

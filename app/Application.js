@@ -11,6 +11,10 @@ if (get_params.anon !== undefined) {
     anon_user = "";
 }
 
+if ("home" in get_params) {
+    HOME_DEBUG = true;
+}
+
 
 Ext.define('ControlRoomDesktop.Application', {
     extend: 'Ext.ux.desktop.App',
@@ -22,7 +26,7 @@ Ext.define('ControlRoomDesktop.Application', {
         'Ext.window.MessageBox',
         'Ext.window.Toast',
         'Ext.ux.desktop.ShortcutModel',
-//        'ControlRoomDesktop.widgets.RfqWidget',
+
         'ControlRoomDesktop.widgets.LensCoolingWidget',
         'ControlRoomDesktop.widgets.MagnetCoolingWidget',
         'ControlRoomDesktop.widgets.LcOutWidget',
@@ -32,6 +36,7 @@ Ext.define('ControlRoomDesktop.Application', {
         // PKT_8
         //'ControlRoomDesktop.widgets.Pkt8TempWidget',
         // in extjs 6.2
+        'ControlRoomDesktop.widgets.RfqWidget',
         'Ext.layout.container.boxOverflow.Menu'
     ],
     
@@ -107,7 +112,7 @@ Ext.define('ControlRoomDesktop.Application', {
     //
     getDesktopConfig: function () {
         var me = this, ret = me.callParent();
-        //var rfqControl = {name: 'RFQ-контоль', iconCls: 'cpu-shortcut', module:'rfq-widg'};
+
         var dataFor = new Array();
         // проверка наличия логина и пароля в localStorage
         // также предполагается добавлять элементы в зависимости от клиента ... 
@@ -115,7 +120,6 @@ Ext.define('ControlRoomDesktop.Application', {
         
         // Модули только для зарегистрированных 
         if ((this.login !== null && this.login !== 'anon') || (this.passw !== null && this.passw !== 'anon') ) {
-            //dataFor.push({name: 'RFQ-контоль', iconCls: 'cpu-shortcut', module:'rfq-widg'});
             forUser();
             forAnon();
         }
@@ -137,13 +141,14 @@ Ext.define('ControlRoomDesktop.Application', {
         
         function forAnon() {
             // Модули для анонимного пользователя
-            dataFor.push({name: 'MagnCool', iconCls: 'magn_48', module:'magncool_widg'}); //'Охлаждение магнитов'
-            dataFor.push({name: 'LensCool', iconCls: 'cooling_small_l_48', module:'lenscool_widg'}); //'Охлаждение линз'
-            dataFor.push({name: 'LensControl', iconCls: 'ps_icon_48x48', module:'lcout_widg'}); //'Питание линз'
+            dataFor.push({name: 'Magn Cool 11',text: "Охлаждение магнитов", iconCls: 'magn_48', module:'magncool_widg'}); //'Охлаждение магнитов'
+            dataFor.push({name: 'LensCool',text: "Охлаждение линз", iconCls: 'cooling_small_l_48', module:'lenscool_widg'}); //'Охлаждение линз'
+            dataFor.push({name: 'LensControl',text: "Питание линз", iconCls: 'ps_icon_48x48', module:'lcout_widg'}); //'Питание линз'
             // LHF
-            dataFor.push({name: 'BuvLhf', iconCls: 'buvlhf_48x48', module:'lhf_widg'}); // 'Линзы жёсткой фокусировки'
+            dataFor.push({name: 'BuvLhf',text: "ЛЖФ", iconCls: 'buvlhf_48x48', module:'lhf_widg', pos: 1}); // 'Линзы жёсткой фокусировки'
             // ??? !!! test
-            // dataFor.push({name: 'PKT-8', iconCls: 'ps_icon_48x48', module:'pkt8temp_widg'}); // ??? ИЗМЕНИТЬ!!!
+            //dataFor.push({name: 'PKT-8',text: "ПКТ-8", iconCls: 'ps_icon_48x48', module:'pkt8temp_widg'}); // ??? ИЗМЕНИТЬ!!!
+            dataFor.push({name: 'RFQ-control',text: "Модулятор RFQ", iconCls: 'rfq_48x48', module:'rfq-widg'}); //'Охлаждение магнитов'
         }
         
         function forUser() {
@@ -153,11 +158,48 @@ Ext.define('ControlRoomDesktop.Application', {
         return Ext.apply(ret, {
 //            wallpaper: 'resources/images/wallpapers/desktop.jpg',
             wallpaper: 'resources/images/wallpapers/desktopLhep.jpg',
-            
+
             shortcuts: Ext.create('Ext.data.Store', {
                 model: 'Ext.ux.desktop.ShortcutModel',
                 data: dataFor
             }),
+            shortcutTpl:[
+                '<tpl for=".">'
+                ,   '<div class="ux-desktop-shortcut" id="{name}-shortcut">'
+                ,       '<div class="ux-desktop-shortcut-icon {iconCls}">'
+                ,           '<img src="',Ext.BLANK_IMAGE_URL,'" title={name}>'
+                ,       '</div>'
+                ,       '<span class="ux-desktop-shortcut-text">{text}</span>'
+                ,   '</div>'
+                ,'</tpl>'
+            ],
+            /*
+            // Если понадобится несколько столбцов для ярлыков
+            // также нужно определить pos = 1 и pos = 0
+             '<table>'
+             ,'<tpl for=".">'
+
+             , '<tpl if="pos == 0 ">'
+             , '<tr>'
+             , '</tpl>'
+
+             , '<td>'
+             ,   '<div class="ux-desktop-shortcut" id="{name}-shortcut">'
+             ,       '<div class="ux-desktop-shortcut-icon {iconCls}">'
+             ,           '<img src="',Ext.BLANK_IMAGE_URL,'" title={name}>'
+             ,       '</div>'
+             ,       '<span class="ux-desktop-shortcut-text">{text}</span>'
+             ,   '</div>'
+             , '</td>'
+
+
+             , '<tpl if="pos == 1 ">'
+             , '</tr>'
+             , '</tpl>'
+
+             ,'</tpl>'
+             ,'</table>'
+             */
             contextMenuItems: contextFor
         });
     },
@@ -169,7 +211,6 @@ Ext.define('ControlRoomDesktop.Application', {
         
         // Модули только для зарегистрированных 
         if ((this.login !== null && this.login !== 'anon') || (this.passw !== null && this.passw !== 'anon') ) {
-//            modules.push(new ControlRoomDesktop.widgets.RfqWidget());            
             forAnon();
             forUser();
         }
@@ -187,6 +228,8 @@ Ext.define('ControlRoomDesktop.Application', {
             modules.push(new ControlRoomDesktop.widgets.BuvLhfControlWidget());
             // ??? !!! tmp
             //modules.push(new ControlRoomDesktop.widgets.Pkt8TempWidget());
+            modules.push(new ControlRoomDesktop.widgets.RfqWidget());
+
         }
         
         function forUser() {

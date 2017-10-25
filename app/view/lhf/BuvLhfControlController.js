@@ -1,42 +1,12 @@
 Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControlController', {
-    extend: 'Ext.app.ViewController',
+    //extend: 'Ext.app.ViewController',
+    extend: 'ControlRoomDesktop.common.AbstractCommonWsController',
     alias: 'controller.buv_lhf',
     init: function () {
         var me = this;
-        // В настройке apache должна содержаться
-        //      ProxyPass /wslhf ws://host/wslhf
-        //      ProxyPassReverse  /wslhf ws://host/wslhf
-        openws(location.host + "/wslhf");
-        
-        var firstnfull = true;
-        // ??? !!! Без этого store не загружается 
-        //Ext.create('store.buvlhfstore');
-        
-        function openws(urlws) {
-            me.ws = Ext.create('Ext.ux.WebSocket', {
-                url: "ws://" + urlws,
-                autoReconnect: true,
-                autoReconnectInterval: 1000,                
-                
-                listeners: {
-                    open: function (ws) {
-                        if (typeof dbg !== 'undefined')
-                            console.log('websocket Open');
-                    },
-                    message: function (ws, data) {
-                        if (data === "")
-                            return;
-                        firstnfull = me.getData(data, firstnfull);
-                        return;
-
-                    },
-                    close: function (ws) {
-                        if (typeof dbg !== 'undefined')
-                            console.log('websocket Close');
-                    }
-                }
-            });
-        }
+        // В Базе Данных `extjs_controlroom`.`ws_rest_hosts`
+        // должен содержаться name = "buv_lhf"
+        me.sendAjaxReqestForGettingWsHost("buv_lhf", "ЛЖФ");
     },
     //
     //
@@ -73,6 +43,8 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControlController', {
         
         var ps_lhf_n = new Array();
         var ps_lhf_lu = new Array();
+
+        var hasWorkingSupply = false;
         
         Ext.iterate(dataForStore, function(key, value){
             var newKey = getNeyKey(key);
@@ -108,6 +80,10 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControlController', {
                     dataObj[item.attr] = item.data;
                 });
                 dataObj["key"] = keyN;
+                if (!hasWorkingSupply) {
+                    if (dataObj["State"] === "ON" || dataObj["State"] === "OFF")
+                        hasWorkingSupply = true;
+                }
                 return dataObj;
             };
         });
@@ -140,10 +116,17 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControlController', {
             var models = mainGrid.getStore().getRange();
             // models[0].set("Current", 12);
             setData(models,ps_lhf_lu);
+
+            mainGrid = me.lookupReference('lhf_n_Grid');
+            record = mainGrid.getSelectionModel();
+            models = mainGrid.getStore().getRange();
+            setData(models,ps_lhf_n);
             
             function setData(inpmodel,dataarr) {
                 for ( i=0; i<inpmodel.length; i++) {
                     inpmodel[i].data = dataarr[i];
+                    // Нужно, чтобы обновлялись данные на выводе
+                    inpmodel[i].set({upd:1});
                 }
             }
         }
@@ -151,20 +134,14 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControlController', {
         if (typeof dbg !== 'undefined')
             console.log("storeMem tmp");
 
+        if (hasWorkingSupply) {
+            me.set_info_message("Данные получены", "green");
+        }
+        else {
+            me.set_info_message("Все источники отключены", "red");
+        }
+
         return first;
-    },
-    //
-    //
-    //
-    panelDestroyed: function (e, eOpts) {
-        if (typeof dbg !== 'undefined')
-            console.log('BUVLhf Destoyed');
-        var me = this;
-        var ws = me.ws;
-        ws.close();
-        if (typeof dbg !== 'undefined')
-            console.log('WS Closed');
-        //this.runner.destroy();
     },
     //
     //
@@ -288,6 +265,29 @@ Ext.define('ControlRoomDesktop.view.lhf.BuvLhfControlController', {
             });
         };
     },
+    //
+    //
+    //
+    set_info_message: function(info_message, color) {
+        var component = Ext.ComponentQuery.query('#info_message')[0];
+        var even_iter = component.even_iter;
+        if (even_iter === undefined) {
+            component.even_iter = 1;
+            var postfix = " ... ";
+        }
+        else {
+            if (component.even_iter === 1) {
+                var postfix = "";
+                component.even_iter = 2;
+            }
+            else if (component.even_iter === 2) {
+                var postfix = " ... ";
+                component.even_iter = 1;
+            }
+        }
+        info_message = '<h2><span style="color:' + color + '">' + info_message + postfix + '</span></h2>';
+        component.update(info_message);
+    }
 });
 
 

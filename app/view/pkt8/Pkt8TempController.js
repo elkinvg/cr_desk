@@ -9,13 +9,14 @@ Ext.define('ControlRoomDesktop.view.pkt8.Pkt8TempController', {
         
         var task = {
             run: function () {
-                if (window.location.hostname === 'localhost') {
-                    // For HOME_debug
-                    var pkt8_serv = '/clone/desk_dbg.php';
-                } else {
-                    var pkt8_serv = '/cr_conf/termo/read_of_pkt8.php';
-                }
-                
+                // if (window.location.hostname === 'localhost') {
+                //     // For HOME_debug
+                //     var pkt8_serv = '/clone/desk_dbg.php';
+                // } else {
+                //     var pkt8_serv = '/cr_conf/termo/read_of_pkt8.php';
+                // }
+                var pkt8_serv = '/cr_conf/termo/read_of_pkt8.php';
+
                 Ext.Ajax.request({
                     url: pkt8_serv,
                     method: 'GET',
@@ -71,6 +72,16 @@ Ext.define('ControlRoomDesktop.view.pkt8.Pkt8TempController', {
         
         var runner = new Ext.util.TaskRunner();
         runner.start(task);
+    },
+    //
+    //
+    //
+    panelDestroyed: function (e, eOpts) {
+        if (typeof dbg !== 'undefined')
+            console.log('magncooling Destoyed');
+        var me = this;
+        if (me.runner !== undefined)
+            me.runner.stop(me.task);
     }
 });
 

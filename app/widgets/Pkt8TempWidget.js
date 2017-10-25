@@ -27,12 +27,12 @@ Ext.define('ControlRoomDesktop.widgets.Pkt8TempWidget', {
                 border: true,
                 
                 // ??? ИЗМЕНИТЬ!!!
-                width: 300,
-                minWidth: 300,
-                maxWidth: 300,
-                height: 500,
-                minHeight: 500,
-                maxHeight: 500,
+                width: 565,
+                minWidth: 565,
+                maxWidth: 565,
+                height: 225,
+                minHeight: 225,
+                maxHeight: 225,
                 items: [{
                         xtype: 'pkt8_temp'
                     }],
