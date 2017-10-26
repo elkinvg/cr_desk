@@ -125,8 +125,6 @@ Ext.define('ControlRoomDesktop.view.rfq.Rfq_controlController', {
                     var inpValue = dataForStore[item];
                     numField.setValue(inpValue);
                 });
-
-                me.lookupReference(item);
             }
         }
         catch (err){
