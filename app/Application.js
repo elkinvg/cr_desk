@@ -37,7 +37,8 @@ Ext.define('ControlRoomDesktop.Application', {
         //'ControlRoomDesktop.widgets.Pkt8TempWidget',
         // in extjs 6.2
         'ControlRoomDesktop.widgets.RfqWidget',
-        'Ext.layout.container.boxOverflow.Menu'
+        'Ext.layout.container.boxOverflow.Menu',
+        'ControlRoomDesktop.widgets.LogOutWidget'
     ],
     
 
@@ -149,6 +150,7 @@ Ext.define('ControlRoomDesktop.Application', {
             // ??? !!! test
             //dataFor.push({name: 'PKT-8',text: "ПКТ-8", iconCls: 'ps_icon_48x48', module:'pkt8temp_widg'}); // ??? ИЗМЕНИТЬ!!!
             dataFor.push({name: 'RFQ-control',text: "Модулятор RFQ", iconCls: 'rfq_48x48', module:'rfq-widg'}); //'Охлаждение магнитов'
+            dataFor.push({name: 'Log',text: 'Журнал', iconCls: 'log_48x48', module:'logout_widg'}); //'Журнал'
         }
         
         function forUser() {
@@ -229,6 +231,7 @@ Ext.define('ControlRoomDesktop.Application', {
             // ??? !!! tmp
             //modules.push(new ControlRoomDesktop.widgets.Pkt8TempWidget());
             modules.push(new ControlRoomDesktop.widgets.RfqWidget());
+            modules.push(new ControlRoomDesktop.widgets.LogOutWidget());
 
         }
         

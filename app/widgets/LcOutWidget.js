@@ -5,6 +5,13 @@ Ext.define('ControlRoomDesktop.widgets.LcOutWidget', {
     // Нужно посмотреть более разумный метод через обработку клика по ярлыку
     // на рабочем столе
     // Пока что происходит через метод создания окна.
+    init: function () {
+        this.launcher = {
+            text: 'Питание линз',
+            iconCls: 'ps_icon_32x32'
+        };
+    },
+
     createWindow: function () {
         var login = localStorage.getItem("login");
         var passw = localStorage.getItem("password");
