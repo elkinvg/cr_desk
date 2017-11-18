@@ -13,7 +13,8 @@ Ext.define('ControlRoomDesktop.widgets.MagnetCoolingWidget', {
     },
     
     createWindow: function () {
-        var desktop = this.app.getDesktop();
+        me = this;
+        var desktop = me.app.getDesktop();
         var win = desktop.getWindow('magncool');
         if (!win) {
             win = desktop.createWindow({
@@ -21,7 +22,7 @@ Ext.define('ControlRoomDesktop.widgets.MagnetCoolingWidget', {
                 iconCls: 'magn_32',
                 stateful: true,
                 id: 'magncool',
-                title: 'Охлаждение магнитов',
+                title: 'Охлаждение магнитов <button id="magn_cool_out_button" style="">Открыть в отдельном окне</button>',
                 border: true,
                 style: {
 //                    borderColor: 'black',
@@ -42,7 +43,17 @@ Ext.define('ControlRoomDesktop.widgets.MagnetCoolingWidget', {
                     }],
             });
             win.show();
+            me.outButtonClick(win);
         }
         return win;
+    },
+    //
+    //
+    //
+    outButtonClick: function (win) {
+        Ext.get('magn_cool_out_button').on('click', function() {
+            win.close();
+            window.open('http://localhost/clone/apps/cr_desk/?anon&widgout=magn_cool', 'magn_cool', 'width=644,height=544');
+        });
     }
 });

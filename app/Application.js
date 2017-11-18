@@ -16,6 +16,8 @@ if ("home" in get_params) {
 }
 
 
+
+
 Ext.define('ControlRoomDesktop.Application', {
     extend: 'Ext.ux.desktop.App',
     login: localStorage.getItem("login"),
@@ -54,6 +56,13 @@ Ext.define('ControlRoomDesktop.Application', {
                 this.login = 'anon';
             }
         }
+        //
+        if (get_params.widgout !== undefined) {
+            if (this.isWidgOut()) {
+                return;
+            }
+        }
+        
         Ext.toast({
             html: 'Hello, ' + this.login,
             header: false,
@@ -258,6 +267,72 @@ Ext.define('ControlRoomDesktop.Application', {
     openSetPage: function() {
         // Будет открываться страница общей настройки для пользователя
         window.open("/");
+    },
+    //
+    //
+    //
+    isWidgOut: function () {
+        if (get_params.widgout === "magn_cool") {
+            magnCoolOut();
+            return true;
+        }
+        if (get_params.widgout === "lens_cool") {
+            lensCoolOut();
+            return true;
+        }
+        if (get_params.widgout === "buv_lhf") {
+            buvLhfCoolOut();
+            return true;
+        }
+        return false;
+
+        // Виджет охлаждения магнитов
+        function magnCoolOut() {
+            var panel = Ext.create({
+                xtype: 'panel',
+                frame: true,
+                renderTo: document.body,
+                height: 690,
+                width: 800,
+                items: [
+                    {
+                        xtype: 'magn_cooling'
+                    }
+                ]
+            });
+        }
+
+        // Виджет охлаждения линз
+        function lensCoolOut() {
+            var panel = Ext.create({
+                xtype: 'panel',
+                frame: true,
+                renderTo: document.body,
+                height: 500,
+                width: 500,
+                items: [
+                    {
+                        xtype: 'lens_cooling'
+                    }
+                ]
+            });
+        }
+
+        // Управление ЛЖФ пучка в ЛУ-20
+        function buvLhfCoolOut() {
+            var panel = Ext.create({
+                xtype: 'panel',
+                frame: true,
+                renderTo: document.body,
+                height: 630,
+                width: 1024,
+                items: [
+                    {
+                        xtype: 'buv_lhf'
+                    }
+                ]
+            });
+        }
     }
     
 });
