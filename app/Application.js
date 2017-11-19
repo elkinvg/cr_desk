@@ -272,6 +272,9 @@ Ext.define('ControlRoomDesktop.Application', {
     //
     //
     isWidgOut: function () {
+        // Используется для открытия виджетов в отдельном окне
+        // если в GET имеется widgout="имя_элемента" откроется соответствующий виджет
+        var headerHeight = 46;
         if (get_params.widgout === "magn_cool") {
             magnCoolOut();
             return true;
@@ -281,18 +284,23 @@ Ext.define('ControlRoomDesktop.Application', {
             return true;
         }
         if (get_params.widgout === "buv_lhf") {
-            buvLhfCoolOut();
+            buvLhfOut();
+            return true;
+        }
+        if (get_params.widgout === "rfq") {
+            rfqOut();
             return true;
         }
         return false;
 
         // Виджет охлаждения магнитов
         function magnCoolOut() {
+            document.title = 'Охлаждение магнитов';
             var panel = Ext.create({
                 xtype: 'panel',
                 frame: true,
                 renderTo: document.body,
-                height: 690,
+                height: 690 - headerHeight,
                 width: 800,
                 items: [
                     {
@@ -304,11 +312,12 @@ Ext.define('ControlRoomDesktop.Application', {
 
         // Виджет охлаждения линз
         function lensCoolOut() {
+            document.title = 'Охлаждение линз';
             var panel = Ext.create({
                 xtype: 'panel',
                 frame: true,
                 renderTo: document.body,
-                height: 500,
+                height: 500 - headerHeight,
                 width: 500,
                 items: [
                     {
@@ -319,12 +328,13 @@ Ext.define('ControlRoomDesktop.Application', {
         }
 
         // Управление ЛЖФ пучка в ЛУ-20
-        function buvLhfCoolOut() {
+        function buvLhfOut() {
+            document.title = 'Управление ЛЖФ пучка в ЛУ-20';
             var panel = Ext.create({
                 xtype: 'panel',
                 frame: true,
                 renderTo: document.body,
-                height: 630,
+                height: 630 - headerHeight,
                 width: 1024,
                 items: [
                     {
@@ -333,6 +343,58 @@ Ext.define('ControlRoomDesktop.Application', {
                 ]
             });
         }
+        // Модулятор RFQ
+        function rfqOut() {
+            document.title = 'Модулятор RFQ';
+            var panel = Ext.create({
+                xtype: 'panel',
+                frame: true,
+                renderTo: document.body,
+                height: 760 - headerHeight,
+                width: 525,
+                items: [
+                    {
+                        xtype: 'rfq_control'
+                    }
+                ]
+            });
+        }
+    },
+    //
+    //
+    //
+    outButtonClick: function(win, name) {
+        // id button must be name+out_button
+        var idButton = name + "_out_button";
+
+        Ext.get(idButton).on('click', function() {
+            // Получение ширины хедера ExtJs панели
+            var headerHeight = win.header.getHeight();
+            // Получение zoom страницы
+            // Скрипт определён в "app/other/detect-zoom.js"
+            var zoom = detectZoom.zoom();
+            //var device = detectZoom.device();
+
+            var winh = win.height - headerHeight;
+            var winw = win.width;
+            var winhnew = Math.round(winh*zoom);
+            var winwnew = Math.round(winw*zoom);
+            
+            var winhw = 'width=' + winwnew + ',height=' + winhnew;
+            var href = window.location.href;
+
+            // Добавление GET параментра для открытия виджета
+            if (href.indexOf("?") === -1) {
+                href += ('?widgout=' + name);
+            }
+            else {
+                href += ('&widgout=' + name);
+            }
+            win.close();
+            // Открытие отдельного окна
+            // Заданы вычесленные ширина и высота
+            window.open(href, name, winhw);
+        });
     }
     
 });

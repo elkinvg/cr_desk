@@ -13,7 +13,8 @@ Ext.define('ControlRoomDesktop.widgets.BuvLhfControlWidget', {
     },
 
     createWindow: function () {
-        var desktop = this.app.getDesktop();
+        me = this;
+        var desktop = me.app.getDesktop();
         var win = desktop.getWindow('buvlhf');
         if (!win) {
             win = desktop.createWindow({
@@ -21,7 +22,7 @@ Ext.define('ControlRoomDesktop.widgets.BuvLhfControlWidget', {
                 iconCls: 'buvlhf_32x32',
                 stateful: true,
                 id: 'buvlhf',
-                title: 'Управление ЛЖФ пучка в ЛУ-20',
+                title: 'Управление ЛЖФ пучка в ЛУ-20 <button id="buv_lhf_out_button" style="">Открыть отдельно</button>',
 
                 // WIDTH
                 width: 1024,
@@ -45,6 +46,7 @@ Ext.define('ControlRoomDesktop.widgets.BuvLhfControlWidget', {
                 }],
             });
             win.show();
+            me.app.outButtonClick(win,'buv_lhf');
         }
         return win;
     }

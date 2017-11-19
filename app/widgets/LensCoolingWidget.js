@@ -13,7 +13,8 @@ Ext.define('ControlRoomDesktop.widgets.LensCoolingWidget', {
     },
     
     createWindow: function () {
-        var desktop = this.app.getDesktop();
+        me = this;
+        var desktop = me.app.getDesktop();
         var win = desktop.getWindow('lenscool');
         if (!win) {
             win = desktop.createWindow({
@@ -21,7 +22,7 @@ Ext.define('ControlRoomDesktop.widgets.LensCoolingWidget', {
                 iconCls: 'cooling_small_32',
                 stateful: true,
                 id: 'lenscool',
-                title: 'Охлаждение линз',
+                title: 'Охлаждение линз <button id="lens_cool_out_button" style="">Открыть отдельно</button>',
                 width: 500,
                 minWidth: 500,
                 maxWidth: 550,
@@ -41,6 +42,7 @@ Ext.define('ControlRoomDesktop.widgets.LensCoolingWidget', {
                     }],
             });
             win.show();
+            me.app.outButtonClick(win,'lens_cool');
         }
         return win;
     }

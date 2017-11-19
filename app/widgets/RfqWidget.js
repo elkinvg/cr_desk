@@ -13,7 +13,8 @@ Ext.define('ControlRoomDesktop.widgets.RfqWidget', {
     },
     
     createWindow: function () {
-        var desktop = this.app.getDesktop();
+        me = this;
+        var desktop = me.app.getDesktop();
         var win = desktop.getWindow('rfqwidg');
         if (!win) {
             win = desktop.createWindow({
@@ -21,7 +22,7 @@ Ext.define('ControlRoomDesktop.widgets.RfqWidget', {
                 iconCls: 'rfq_32x32',
                 stateful: true,
                 id: 'rfqwidg',
-                title: 'Управление модулятором RFQ',
+                title: 'Управление модулятором RFQ <button id="rfq_out_button" style="">Открыть отдельно</button>',
                 // WIDTH
                 width: 525,
                 minWidth: 525,
@@ -35,6 +36,7 @@ Ext.define('ControlRoomDesktop.widgets.RfqWidget', {
                     }]
             });
             win.show();
+            me.app.outButtonClick(win,'rfq');
         }
         return win;
     },   

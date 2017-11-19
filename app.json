@@ -226,6 +226,9 @@
         {
             "path": "app.js",
             "bundle": true
+        },
+        {
+            "path": "app/other/detect-zoom.js"
         }
     ],
 
