@@ -18,7 +18,10 @@ Ext.define('ControlRoomDesktop.view.cooling.AbstractCoolChartController', {
             var graphbut = Ext.ComponentQuery.query('[name=lens_graphbut]')[0];
         }
 
-        graphbut.disable();
+        // Для открытия графика в отдельной странице
+        if (get_params.widgout !== "magn_cool_chart" && get_params.widgout !== "lens_cool_chart") {
+            graphbut.disable();
+        }
 
         var dStore = Ext.data.StoreManager.lookup('cooling_Store');
 

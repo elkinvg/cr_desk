@@ -291,6 +291,27 @@ Ext.define('ControlRoomDesktop.Application', {
             rfqOut();
             return true;
         }
+        if (get_params.widgout === "magn_cool_chart") {
+            var win = Ext.create('ControlRoomDesktop.view.cooling.MagnetCoolChart');
+
+            // Делаем график не закрываенмым и не модальным
+            win.closable = false;
+            win.modal = false;
+            win.getComponent( 'close_chart_magn_but' ).hide();
+            win.show();
+            return true;
+        }
+        if (get_params.widgout === "lens_cool_chart") {
+            var win = Ext.create('ControlRoomDesktop.view.cooling.LensCoolChart');
+
+            // Делаем график не закрываенмым и не модальным
+            win.closable = false;
+            win.modal = false;
+            win.getComponent( 'close_chart_lens_but' ).hide();
+            win.show();
+            return true;
+        }
+
         return false;
 
         // Виджет охлаждения магнитов

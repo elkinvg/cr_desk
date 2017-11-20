@@ -160,6 +160,7 @@ Ext.define('ControlRoomDesktop.view.cooling.LensCoolChart', {
                 },
                 {
                     xtype: 'button',
+                    id: 'close_chart_lens_but', 
                     text: 'Закрыть',
                     margin: '0 0 0 100',
                     width: 150,

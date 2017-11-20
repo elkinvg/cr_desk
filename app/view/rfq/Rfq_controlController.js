@@ -170,8 +170,12 @@ Ext.define('ControlRoomDesktop.view.rfq.Rfq_controlController', {
             if (item === "D63")
                 value = ( "<b>" + (value/400).toFixed(2) + "</b>" + " мА");
 
-            if (item === "D98" || item === "D116" || item === "D46")
-                value = ( "<b>" + value + "</b>" + " В" );
+            if (item === "D98" || item === "D116" || item === "D46") {
+                if (item === 'D46')
+                    value = ( "<b>" + value/10. + "</b>" + " В" );
+                else
+                    value = ( "<b>" + value + "</b>" + " В" );
+            }
 
             field.setValue(value);
         }

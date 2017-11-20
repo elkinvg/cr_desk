@@ -59,8 +59,18 @@ Ext.define('ControlRoomDesktop.view.cooling.MagnetCoolingController', {
     getChart: function () {
         // График строится по запросу
         // При Выводе графика без запроса вылезает глюк, если в течении
-        // 30 секунд не перейти на вкладку        
-        var win = Ext.create('ControlRoomDesktop.view.cooling.MagnetCoolChart');
+        // 30 секунд не перейти на вкладку
+
+        // Если было вызвано из отделённого окна
+        if (get_params.widgout === "magn_cool") {
+            var href = window.location.href;
+            // Замена GET 
+            href = href.replace("widgout=magn_cool","widgout=magn_cool_chart");
+            window.open(href);
+        }
+        else {
+            var win = Ext.create('ControlRoomDesktop.view.cooling.MagnetCoolChart');
+        }
     },
     //
     //
